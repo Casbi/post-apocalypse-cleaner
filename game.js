@@ -87,10 +87,10 @@ function preload ()
     // Load in images and sprites
     this.load.spritesheet('player_handgun', 'assets/sprites/player_handgun.png',
         { frameWidth: 66, frameHeight: 60 }
-    ); // Made by tokkatrain: https://tokkatrain.itch.io/top-down-basic-set
-    this.load.image('bullet', 'assets/sprites/bullets/bullet6.png');
-    this.load.image('target', 'assets/demoscene/ball.png');
-    this.load.image('background', 'assets/skies/underwater1.png');
+    );
+    this.load.image('bullet', 'assets/sprites/bullet.png');
+    this.load.image('target', 'assets/ball.png');
+    this.load.image('background', 'assets/underwater1.png');
 }
 
 function create ()
