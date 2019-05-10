@@ -16,7 +16,7 @@ var config = {
     }
 };
 
-var playerDestination = new Phaser.Math.Vector2();
+var myGlobal = {};
 
 var game = new Phaser.Game(config);
 
@@ -26,6 +26,9 @@ function preload() {
         frameHeight: 16
     });
 
+    myGlobal.playerDestination = new Phaser.Math.Vector2();
+
+    // TODO
     // this.load.image('background', 'assets/underwater1.png');
 }
 
@@ -51,30 +54,31 @@ function create() {
         repeat: -1
     });
 
-    duck = this.physics.add.sprite(400, 300, 'charactersWeapons').play('duckIdle');
+    myGlobal.duck = this.physics.add.sprite(400, 300, 'charactersWeapons').play('duckIdle');
 
     this.input.on('pointerdown', function (pointer) {
-        playerDestination.x = pointer.x;
-        playerDestination.y = pointer.y;
+        myGlobal.playerDestination.x = pointer.x;
+        myGlobal.playerDestination.y = pointer.y;
 
-        this.physics.moveToObject(duck, pointer, 100);
+        this.physics.moveToObject(myGlobal.duck, pointer, 100);
     }, this);
 
-    // radius(60) - half of sprite width(8) = 52
-    // to align centre of the circle to center of the sprite
-    duck.setCircle(60, -52, -52);
+    myGlobal.zombie = this.physics.add.sprite(200, 100, 'charactersWeapons').play('zombieRun');
+    // create an empty rectangle game object, probably doesn't have to be circle, i just can't find a empty game object
+    // it will later get its body set to a circle anyway to be used as zombie's vision
+    myGlobal.zombieVision = this.add.rectangle(myGlobal.zombie.x, myGlobal.zombie.y, 0, 0);
+    this.physics.add.existing(myGlobal.zombieVision);
+    myGlobal.zombieVision.body.setCircle(60, -60, -60);
 
-    zombie = this.physics.add.sprite(200, 100, 'charactersWeapons').play('zombieRun');
-    
-    zombie.setCircle(30, -22, -22);
+    this.physics.add.overlap(myGlobal.duck, myGlobal.zombieVision);
 }
 
 function update() {
-    let distance = Phaser.Math.Distance.Between(duck.x, duck.y, playerDestination.x, playerDestination.y);
+    let distance = Phaser.Math.Distance.Between(myGlobal.duck.x, myGlobal.duck.y, myGlobal.playerDestination.x, myGlobal.playerDestination.y);
 
     if (distance < 1) {
-        duck.body.stop();
-        //duck.body.reset(playerDestination.x, playerDestination.y);
+        myGlobal.duck.body.stop();
     }
 
+    myGlobal.zombieVision.body.debugBodyColor = myGlobal.zombieVision.body.touching.none ? 0x0099ff : 0xff9900;
 }
