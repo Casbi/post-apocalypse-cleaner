@@ -30,7 +30,7 @@ function preload() {
     });
 
     myGlobal.playerDestination = new Phaser.Math.Vector2();
-    myGlobal.existingPlayerPosition = new Phaser.Math.Vector2();
+
     // TODO
     // this.load.image('background', 'assets/underwater1.png');
 }
@@ -73,9 +73,10 @@ function create() {
     myGlobal.zombie.vision = myScene.add.rectangle(myGlobal.zombie.x, myGlobal.zombie.y, 0, 0);
     myScene.physics.add.existing(myGlobal.zombie.vision);
     myGlobal.zombie.vision.body.setCircle(60, -60, -60);
+    myGlobal.zombie.vision.playerLastPosition = new Phaser.Math.Vector2();
 
     myScene.time.addEvent({
-        delay: 500,
+        delay: 100,
         loop: true,
         callback: function(){
             if (myScene.physics.overlap(myGlobal.duck, myGlobal.zombie.vision)){
@@ -83,6 +84,19 @@ function create() {
                 myScene.physics.moveTo(myGlobal.zombie, myGlobal.duck.x, myGlobal.duck.y);
             } else {
                 myGlobal.zombie.vision.body.debugBodyColor = 0x0099ff;
+            }
+        }
+    });
+
+    myScene.time.addEvent({
+        delay: 2500,
+        loop: true,
+        callback: function(){
+            if (!myScene.physics.overlap(myGlobal.duck, myGlobal.zombie.vision)){
+                myGlobal.zombie.vision.body.debugBodyColor = 0x0099ff;
+                myGlobal.zombie.body.stop();
+            } else {
+                myGlobal.zombie.vision.body.debugBodyColor = 0xff9900;
             }
         }
     });
