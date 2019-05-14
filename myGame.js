@@ -19,24 +19,26 @@ var config = {
 var myGlobal = {};
 
 var game = new Phaser.Game(config);
+var myScene;
 
 function preload() {
-    this.load.spritesheet('charactersWeapons', 'assets/charactersWeapons.png', {
+    myScene = this;
+
+    myScene.load.spritesheet('charactersWeapons', 'assets/charactersWeapons.png', {
         frameWidth: 16,
         frameHeight: 16
     });
 
     myGlobal.playerDestination = new Phaser.Math.Vector2();
-
+    myGlobal.existingPlayerPosition = new Phaser.Math.Vector2();
     // TODO
     // this.load.image('background', 'assets/underwater1.png');
 }
 
 function create() {
-
-    this.anims.create({
+    myScene.anims.create({
         key: 'duckIdle',
-        frames: this.anims.generateFrameNumbers('charactersWeapons', {
+        frames: myScene.anims.generateFrameNumbers('charactersWeapons', {
             start: 0,
             end: 3
         }),
@@ -44,9 +46,9 @@ function create() {
         repeat: -1
     });
 
-    this.anims.create({
+    myScene.anims.create({
         key: 'zombieRun',
-        frames: this.anims.generateFrameNumbers('charactersWeapons', {
+        frames: myScene.anims.generateFrameNumbers('charactersWeapons', {
             start: 5,
             end: 9
         }),
@@ -54,31 +56,49 @@ function create() {
         repeat: -1
     });
 
-    myGlobal.duck = this.physics.add.sprite(400, 300, 'charactersWeapons').play('duckIdle');
+    myGlobal.duck = myScene.physics.add.sprite(400, 300, 'charactersWeapons').play('duckIdle');
 
-    this.input.on('pointerdown', function (pointer) {
+    myScene.input.on('pointerdown', function (pointer) {
         myGlobal.playerDestination.x = pointer.x;
         myGlobal.playerDestination.y = pointer.y;
 
-        this.physics.moveToObject(myGlobal.duck, pointer, 100);
-    }, this);
+        myScene.physics.moveToObject(myGlobal.duck, pointer, 100);
+    }, myScene);
 
-    myGlobal.zombie = this.physics.add.sprite(200, 100, 'charactersWeapons').play('zombieRun');
-    // create an empty rectangle game object, probably doesn't have to be circle, i just can't find a empty game object
-    // it will later get its body set to a circle anyway to be used as zombie's vision
-    myGlobal.zombieVision = this.add.rectangle(myGlobal.zombie.x, myGlobal.zombie.y, 0, 0);
-    this.physics.add.existing(myGlobal.zombieVision);
-    myGlobal.zombieVision.body.setCircle(60, -60, -60);
+    myGlobal.zombie = myScene.physics.add.sprite(200, 100, 'charactersWeapons').play('zombieRun');
 
-    this.physics.add.overlap(myGlobal.duck, myGlobal.zombieVision);
+    // create an empty rectangle game object, probably doesn't have to be circle
+    // i just can't find a empty game object
+    // immediantly set its *body* to a circle to be used as zombie's vision (check overlap with player)
+    myGlobal.zombie.vision = myScene.add.rectangle(myGlobal.zombie.x, myGlobal.zombie.y, 0, 0);
+    myScene.physics.add.existing(myGlobal.zombie.vision);
+    myGlobal.zombie.vision.body.setCircle(60, -60, -60);
+
+    myScene.time.addEvent({
+        delay: 500,
+        loop: true,
+        callback: function(){
+            if (myScene.physics.overlap(myGlobal.duck, myGlobal.zombie.vision)){
+                myGlobal.zombie.vision.body.debugBodyColor = 0xff9900;
+                myScene.physics.moveTo(myGlobal.zombie, myGlobal.duck.x, myGlobal.duck.y);
+            } else {
+                myGlobal.zombie.vision.body.debugBodyColor = 0x0099ff;
+            }
+        }
+    });
+
 }
 
 function update() {
-    let distance = Phaser.Math.Distance.Between(myGlobal.duck.x, myGlobal.duck.y, myGlobal.playerDestination.x, myGlobal.playerDestination.y);
-
-    if (distance < 1) {
+    if (Phaser.Math.Distance.Between(   myGlobal.duck.x, 
+                                        myGlobal.duck.y,
+                                        myGlobal.playerDestination.x,
+                                        myGlobal.playerDestination.y) < 1) {
         myGlobal.duck.body.stop();
     }
 
-    myGlobal.zombieVision.body.debugBodyColor = myGlobal.zombieVision.body.touching.none ? 0x0099ff : 0xff9900;
+    // keep zombie vision on the zombie
+    myGlobal.zombie.vision.x = myGlobal.zombie.x;
+    myGlobal.zombie.vision.y = myGlobal.zombie.y;
+
 }
