@@ -101,6 +101,16 @@ function create() {
         }
     });
 
+    myScene.time.addEvent({
+        delay: 17,
+        loop: true,
+        callback: function(){
+            if (myScene.physics.overlap(myGlobal.duck, myGlobal.zombie)) {
+                myGlobal.zombie.body.stop();
+            }
+        }
+    });
+
 }
 
 function update() {
