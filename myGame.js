@@ -65,6 +65,18 @@ function create() {
         myScene.physics.moveToObject(myGlobal.duck, pointer, 100);
     }, myScene);
 
+    myScene.time.addEvent({
+        loop: true,
+        callback: function() {
+            if (Phaser.Math.Distance.Between(   myGlobal.duck.x, 
+                                                myGlobal.duck.y,
+                                                myGlobal.playerDestination.x,
+                                                myGlobal.playerDestination.y) < 1) {
+                myGlobal.duck.body.stop();
+            }
+        }
+    });
+
     myGlobal.zombie = myScene.physics.add.sprite(200, 100, 'charactersWeapons').play('zombieRun');
 
     // create an empty rectangle game object, probably doesn't have to be circle
@@ -125,11 +137,5 @@ function create() {
 }
 
 function update() {
-    if (Phaser.Math.Distance.Between(   myGlobal.duck.x, 
-                                        myGlobal.duck.y,
-                                        myGlobal.playerDestination.x,
-                                        myGlobal.playerDestination.y) < 1) {
-        myGlobal.duck.body.stop();
-    }
 
 }
