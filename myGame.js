@@ -111,6 +111,17 @@ function create() {
         }
     });
 
+    // keep zombie vision on the zombie if the zombie moves
+    myScene.time.addEvent({
+        loop: true,
+        callback: function() {
+            if (myGlobal.zombie.body.moves) {
+                myGlobal.zombie.vision.x = myGlobal.zombie.x;
+                myGlobal.zombie.vision.y = myGlobal.zombie.y;
+            }
+        }
+    });
+
 }
 
 function update() {
@@ -120,9 +131,5 @@ function update() {
                                         myGlobal.playerDestination.y) < 1) {
         myGlobal.duck.body.stop();
     }
-
-    // keep zombie vision on the zombie
-    myGlobal.zombie.vision.x = myGlobal.zombie.x;
-    myGlobal.zombie.vision.y = myGlobal.zombie.y;
 
 }
