@@ -25,7 +25,6 @@ class Zombie extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, myTextureKey) {
       super(scene, x, y, myTextureKey);
 
-      this.anims.play('zombieRun');
     }
 }
 
@@ -82,9 +81,9 @@ function create() {
         }
     });
 
-    myGlobal.zombie = myScene.physics.add.existing(new Zombie(myScene, 200, 100, 'charactersWeapons')).play('zombieRun');
+    //myGlobal.zombie = myScene.physics.add.existing(new Zombie(myScene, 200, 100, 'charactersWeapons')).play('zombieRun');
     
-    //myGlobal.zombie = myScene.physics.add.sprite(200, 100, 'charactersWeapons').play('zombieRun');
+    myGlobal.zombie = myScene.physics.add.sprite(200, 100, 'charactersWeapons').play('zombieRun');
 
     /*  create an empty rectangle game object, probably doesn't have to be circle
         i just can't find a empty game object
