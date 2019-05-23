@@ -32,23 +32,12 @@ class Zombie extends Phaser.GameObjects.Sprite {
 function preload() {
     myScene = this;
 
-    var img1 = new Image();
-    img1.src = 'assets/charactersWeapons.png';
-
-    myScene.textures.addSpriteSheet('charactersWeapons', img1, {
-        frameWidth: 16,
-        frameHeight: 16 
-    });
-
     myScene.load.spritesheet('charactersWeapons', 'assets/charactersWeapons.png', {
         frameWidth: 16,
         frameHeight: 16
     });
 
     myGlobal.playerDestination = new Phaser.Math.Vector2();
-
-    // TODO
-    // this.load.image('background', 'assets/underwater1.png');
 }
 
 function create() {
@@ -93,7 +82,7 @@ function create() {
         }
     });
 
-    myGlobal.zombie = myScene.physics.add.existing(new Zombie(myScene, 200, 100, 'charactersWeapons'))
+    myGlobal.zombie = myScene.physics.add.existing(new Zombie(myScene, 200, 100, 'charactersWeapons')).play('zombieRun');
     
     //myGlobal.zombie = myScene.physics.add.sprite(200, 100, 'charactersWeapons').play('zombieRun');
 
