@@ -1,4 +1,4 @@
-import Zombie from './zombie';
+import Zombie from 'zombie';
 
 var config = {
     type: Phaser.WEBGL,
