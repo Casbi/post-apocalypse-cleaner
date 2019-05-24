@@ -1,10 +1,10 @@
 export default class Zombie extends Phaser.GameObjects.Sprite {
     constructor(pScene, x, y, pTextureKey, pPlayer) {
       super(pScene, x, y, pTextureKey);
-
+      
       this.play('zombieRun');
-
-    /*  create an empty rectangle game object, probably doesn't have to be circle
+    
+      /*  create an empty rectangle game object, probably doesn't have to be circle
         i just can't find a empty game object
         immediantly set its *body* to a circle to be used as zombie's vision (check overlap with player) */
     this.vision = pScene.add.rectangle(this.x, this.y, 0, 0);
