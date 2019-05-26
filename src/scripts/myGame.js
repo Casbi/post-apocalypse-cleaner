@@ -77,11 +77,26 @@ function create() {
     });
 
     // add zombie to the scene (both the display list and the physics manager)
-    myGlobal.zombie = myScene.add.existing(new Zombie(myScene, 200, 100, 'charactersWeapons', myGlobal.duck));
-    myScene.physics.add.existing(myGlobal.zombie);
+    // myGlobal.zombie = myScene.add.existing(new Zombie(myScene, 200, 100, 'charactersWeapons', myGlobal.duck));
+    // myScene.physics.add.existing(myGlobal.zombie);
+    addZombiesAroundPosition(100, 100, 500, 150, 20);
 
 }
 
 function update() {
 
+}
+
+function addZombiesAroundPosition(minX, minY, maxX, maxY, pNumber) {
+    myGlobal.zombies = [];
+
+    for (let i = 0; i<=pNumber; i++) {
+        myGlobal.zombies[i] = myScene.add.existing(new Zombie(
+            myScene,
+            Math.floor(Math.random() * (maxX - minX)) + minX,
+            Math.floor(Math.random() * (maxY - minY)) + minY,
+            'charactersWeapons',
+            myGlobal.duck));
+        myScene.physics.add.existing(myGlobal.zombies[i]);
+    }
 }
