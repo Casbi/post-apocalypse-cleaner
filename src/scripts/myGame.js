@@ -31,6 +31,8 @@ function preload() {
         frameHeight: 16
     });
 
+    myScene.load.image('bullet', 'assets/bullet2.png');
+
     myGlobal.playerDestination = new Phaser.Math.Vector2();
 }
 
@@ -76,10 +78,18 @@ function create() {
         }
     });
 
-    // add zombie to the scene (both the display list and the physics manager)
-    // myGlobal.zombie = myScene.add.existing(new Zombie(myScene, 200, 100, 'charactersWeapons', myGlobal.duck));
-    // myScene.physics.add.existing(myGlobal.zombie);
     addZombiesAroundPosition(100, 100, 500, 150, 20);
+
+    
+
+    myScene.time.addEvent({
+        delay: 300,
+        repeat: 50,
+        callback: function() {
+            myGlobal.bullet = myScene.physics.add.image(myGlobal.duck.x,myGlobal.duck.y, 'bullet');
+            myScene.physics.moveToObject(myGlobal.bullet, myGlobal.zombies[0],500);
+        }
+    });
 
 }
 
