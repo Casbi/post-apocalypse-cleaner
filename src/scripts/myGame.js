@@ -80,13 +80,23 @@ function create() {
 
     addZombiesAroundPosition(100, 100, 500, 150, 20);
 
-    
-
     myScene.time.addEvent({
         delay: 300,
         repeat: 50,
         callback: function() {
             myGlobal.bullet = myScene.physics.add.image(myGlobal.duck.x,myGlobal.duck.y, 'bullet');
+
+            myGlobal.zombies.sort(
+                function(a,b) {
+                    let aX = a.x - myGlobal.duck.x;
+                    let aY = a.y - myGlobal.duck.y;
+
+                    let bX = b.x - myGlobal.duck.x;
+                    let bY = b.y - myGlobal.duck.y;
+                    
+                    return (Math.abs(Math.sqrt(aX*aX + aY*aY)) - Math.abs(Math.sqrt(bX*bX + bY*bY))) ;
+                }); 
+            
             myScene.physics.moveToObject(myGlobal.bullet, myGlobal.zombies[0],500);
         }
     });
