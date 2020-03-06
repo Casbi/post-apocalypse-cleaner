@@ -1,4 +1,5 @@
 import Zombie from './zombie.js';
+import Bullet from './bullet.js';
 
 var config = {
     type: Phaser.WEBGL,
@@ -84,7 +85,11 @@ function create() {
         delay: 300,
         repeat: 50,
         callback: function() {
-            myGlobal.bullet = myScene.physics.add.image(myGlobal.duck.x,myGlobal.duck.y, 'bullet');
+            myGlobal.bullet = myScene.add.existing(new Bullet(
+                myScene,
+                myGlobal.duck,
+                'bullet'
+            ));
 
             myGlobal.zombies.sort(
                 function(a,b) {
