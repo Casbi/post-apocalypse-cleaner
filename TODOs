@@ -1,0 +1,2 @@
+create bullet as game object
+make bullet disappear when it hits the zombie
