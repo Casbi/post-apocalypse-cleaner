@@ -1,1 +1,3 @@
 /lookup/*
+/node_modules/*
+/.vs/*
