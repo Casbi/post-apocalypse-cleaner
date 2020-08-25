@@ -102,7 +102,7 @@ function create() {
                     return (Math.abs(Math.sqrt(aX*aX + aY*aY)) - Math.abs(Math.sqrt(bX*bX + bY*bY))) ;
                 }); 
             
-            myScene.physics.moveToObject(myGlobal.bullet, myGlobal.zombies[0],500);
+            myScene.physics.moveToObject(myGlobal.bullet, myGlobal.zombies[0], 500);
         }
     });
 
