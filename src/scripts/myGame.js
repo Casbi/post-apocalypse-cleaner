@@ -79,7 +79,7 @@ function create() {
         }
     });
 
-    addZombiesAroundPosition(100, 100, 500, 150, 20);
+    addZombiesAroundPosition(100, 100, 500, 150, 5);
 
     myScene.time.addEvent({
         delay: 300,
