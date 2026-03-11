@@ -9,7 +9,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: false
+            debug: true
         }
     },
     scene: {
@@ -58,6 +58,8 @@ function create() {
         repeat: -1
     });
 
+    myGlobal.zombieGroup = myScene.physics.add.group();
+
     myGlobal.duck = myScene.physics.add.sprite(400, 300, 'charactersWeapons').play('duckIdle');
 
     myScene.input.on('pointerdown', function (pointer) {
@@ -79,7 +81,7 @@ function create() {
         }
     });
 
-    addZombiesAroundPosition(100, 100, 500, 150, 20);
+    addZombiesAroundPosition(100, 100, 500, 150, 5);
 
     myScene.time.addEvent({
         delay: 300,
@@ -105,6 +107,13 @@ function create() {
                 }); 
 
             myScene.physics.moveToObject(myGlobal.bullet, myGlobal.zombies[0],500);
+
+            myScene.physics.add.overlap(
+                myGlobal.bullet,
+                myGlobal.zombieGroup,
+                function () {
+                    myGlobal.bullet.destroy();
+            });
         }
     });
 
@@ -125,5 +134,6 @@ function addZombiesAroundPosition(minX, minY, maxX, maxY, pNumber) {
             'charactersWeapons',
             myGlobal.duck));
         myScene.physics.add.existing(myGlobal.zombies[i]);
+        myGlobal.zombieGroup.add(myGlobal.zombies[i]);
     }
 }
