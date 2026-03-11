@@ -70,6 +70,7 @@ function create() {
     }, myScene);
 
     myScene.time.addEvent({
+        delay: 17,
         loop: true,
         callback: function() {
             if (Phaser.Math.Distance.Between(   myGlobal.duck.x, 
