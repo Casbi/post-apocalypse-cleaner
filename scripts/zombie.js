@@ -63,4 +63,9 @@ export default class Zombie extends Phaser.GameObjects.Sprite {
             }
         });
     }
+
+    die() {
+        this.vision.destroy();
+        this.destroy();
+    }
 }

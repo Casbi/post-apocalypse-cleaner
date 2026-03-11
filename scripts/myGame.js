@@ -109,12 +109,7 @@ function create() {
 
             myScene.physics.moveToObject(myGlobal.bullet, myGlobal.zombies[0],500);
 
-            myScene.physics.add.overlap(
-                myGlobal.bullet,
-                myGlobal.zombieGroup,
-                function () {
-                    myGlobal.bullet.destroy();
-            });
+            myScene.physics.add.overlap(myGlobal.bullet, myGlobal.zombieGroup, onBulletHitZombie);
         }
     });
 
@@ -137,4 +132,10 @@ function addZombiesAroundPosition(minX, minY, maxX, maxY, pNumber) {
         myScene.physics.add.existing(myGlobal.zombies[i]);
         myGlobal.zombieGroup.add(myGlobal.zombies[i]);
     }
+}
+
+function onBulletHitZombie(bullet, zombie) {
+    bullet.destroy();
+    zombie.die();
+    myGlobal.zombies = myGlobal.zombies.filter(z => z !== zombie);
 }
