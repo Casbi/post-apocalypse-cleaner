@@ -30,12 +30,12 @@ jobs:
       - name: Copy src files into pub branch
         run: |
           # Copy assets folder
-          mkdir -p pub/src/assets
-          cp -r master/src/assets/. pub/src/assets/
+          mkdir -p pub/assets
+          cp -r master/src/assets/. pub/assets/
 
           # Copy scripts folder
-          mkdir -p pub/src/scripts
-          cp -r master/src/scripts/. pub/src/scripts/
+          mkdir -p pub/scripts
+          cp -r master/src/scripts/. pub/scripts/
 
           # Copy index.html
           cp master/src/index.html pub/src/index.html
