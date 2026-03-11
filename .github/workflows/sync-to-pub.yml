@@ -1,0 +1,55 @@
+name: sync files to pub branch
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          path: master
+
+      - name: Checkout pub branch
+        uses: actions/checkout@v4
+        with:
+          ref: pub
+          path: pub
+
+      - name: Remove existing files from pub branch
+        run: |
+          rm -rf pub/assets
+          rm -rf pub/scripts
+          rm -f pub/index.html
+
+      - name: Copy src files into pub branch
+        run: |
+          # Copy assets folder
+          mkdir -p pub/assets
+          cp -r master/src/assets/. pub/assets/
+
+          # Copy scripts folder
+          mkdir -p pub/scripts
+          cp -r master/src/scripts/. pub/scripts/
+
+          # Copy index.html
+          cp master/src/index.html pub/index.html
+
+      - name: Commit and push to pub
+        working-directory: pub
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add assets scripts index.html
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "sync: merge src files from master [skip ci]"
+            git push origin pub
+          fi
