@@ -86,7 +86,7 @@ function create() {
 
     myScene.time.addEvent({
         delay: 300,
-        repeat: 50,
+        loop: true,
         callback: function() {
             if (myGlobal.zombies.length > 0) {
                 myGlobal.bullet = myScene.add.existing(new Bullet(myScene, myGlobal.duck, 'bullet'));
