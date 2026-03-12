@@ -8,7 +8,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 0 },
+            gravity: {x:0, y: 0 },
             debug: true
         }
     },
@@ -36,7 +36,7 @@ function preload() {
 
     myGlobal.playerDestination = new Phaser.Math.Vector2();
 }
-
+/** @this {Phaser.Scene} */
 function create() {
     myScene.anims.create({
         key: 'duckIdle',
@@ -89,25 +89,25 @@ function create() {
         repeat: 50,
         callback: function() {
             if (myGlobal.zombies.length > 0) {
-                myGlobal.bullet = myScene.add.existing(new Bullet(
-                myScene,
-                myGlobal.duck,
-                'bullet'
-            ));
+                myGlobal.bullet = myScene.add.existing(new Bullet(myScene, myGlobal.duck, 'bullet'));
 
-            myScene.physics.add.existing(myGlobal.bullet);
+                myScene.physics.add.existing(myGlobal.bullet);
 
                 myGlobal.zombies.sort(
-                function(a,b) {
-                    let aX = a.x - myGlobal.duck.x;
-                    let aY = a.y - myGlobal.duck.y;
+                    function(a,b) {
+                        let aX = a.x - myGlobal.duck.x;
+                        let aY = a.y - myGlobal.duck.y;
 
-                    let bX = b.x - myGlobal.duck.x;
-                    let bY = b.y - myGlobal.duck.y;
-                    
-                    return (Math.abs(Math.sqrt(aX*aX + aY*aY)) - Math.abs(Math.sqrt(bX*bX + bY*bY))) ;
-                }); 
-                myScene.physics.moveToObject(myGlobal.bullet, myGlobal.zombies[0],500);
+                        let bX = b.x - myGlobal.duck.x;
+                        let bY = b.y - myGlobal.duck.y;
+                        
+                        return (Math.abs(Math.sqrt(aX*aX + aY*aY)) - Math.abs(Math.sqrt(bX*bX + bY*bY))) ;
+                    }
+                );
+                let targetX = myGlobal.zombies[0].x;
+                let targetY = myGlobal.zombies[0].y;
+                
+                myScene.physics.moveTo(myGlobal.bullet, targetX, targetY, 500);
                 myScene.physics.add.overlap(myGlobal.bullet, myGlobal.zombieGroup, onBulletHitZombie);
             }
             
