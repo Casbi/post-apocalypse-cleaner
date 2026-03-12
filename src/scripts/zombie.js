@@ -4,16 +4,18 @@ export default class Zombie extends Phaser.GameObjects.Sprite {
 
         this.play('zombieRun');
 
-        /* create an empty rectangle game object, probably doesn't have to be circle
-           i just can't find a empty game object
-           immediantly set its *body* to a circle to be used as zombie's vision (check overlap with player) */
+        /*
+            create an empty rectangle game object, probably doesn't have to be circle
+            i just can't find a empty game object
+            immediantly set its *body* to a circle to be used as zombie's vision (check overlap with player)
+        */
         this.vision = pScene.add.rectangle(this.x, this.y, 0, 0);
         pScene.physics.add.existing(this.vision);
         this.vision.body.setCircle(60, -60, -60);
         this.vision.playerLastPosition = new Phaser.Math.Vector2();
 
         // check if zombie can see duck and move towards duck if it can
-        pScene.time.addEvent({
+        this.timerDuckVisionFollow = pScene.time.addEvent({
             delay: 100,
             loop: true,
             callback: () => {
@@ -27,7 +29,7 @@ export default class Zombie extends Phaser.GameObjects.Sprite {
         });
 
         // stop if zombie hasn't seen duck for a while
-        pScene.time.addEvent({
+        this.timerDuckVisionLost = pScene.time.addEvent({
             delay: 2500,
             loop: true,
             callback: () => {
@@ -41,7 +43,7 @@ export default class Zombie extends Phaser.GameObjects.Sprite {
         });
 
         // stop if zombie reached duck
-        pScene.time.addEvent({
+        this.timerDuckReached = pScene.time.addEvent({
             delay: 17,
             loop: true,
             callback: () => {
@@ -52,7 +54,7 @@ export default class Zombie extends Phaser.GameObjects.Sprite {
         });
 
         // keep zombie vision on the zombie if the zombie moves
-        pScene.time.addEvent({
+        this.timerVisionUpdate = pScene.time.addEvent({
             delay: 17,
             loop: true,
             callback: () => {
@@ -67,5 +69,9 @@ export default class Zombie extends Phaser.GameObjects.Sprite {
     die() {
         this.vision.destroy();
         this.destroy();
+        this.timerDuckVisionFollow.destroy();
+        this.timerDuckVisionLost.destroy();
+        this.timerDuckReached.destroy();
+        this.timerVisionUpdate.destroy();
     }
 }
