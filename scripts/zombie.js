@@ -20,11 +20,10 @@ export default class Zombie extends Phaser.GameObjects.Sprite {
             loop: true,
             callback: () => {
                 if (pScene.physics.overlap(pPlayer, this.vision)) {
-                    this.vision.body.debugBodyColor = 0xff9900;
+                    // this.vision.body.debugBodyColor = 0xff9900;
                     pScene.physics.moveTo(this, pPlayer.x, pPlayer.y);
-                } else {
-                    this.vision.body.debugBodyColor = 0x0099ff;
                 }
+                // this.vision.body.debugBodyColor = 0x0099ff;
             }
         });
 
@@ -34,11 +33,10 @@ export default class Zombie extends Phaser.GameObjects.Sprite {
             loop: true,
             callback: () => {
                 if (!pScene.physics.overlap(pPlayer, this.vision)) {
-                    this.vision.body.debugBodyColor = 0x0099ff;
+                    // this.vision.body.debugBodyColor = 0x0099ff;
                     this.body.stop();
-                } else {
-                    this.vision.body.debugBodyColor = 0xff9900;
                 }
+                // this.vision.body.debugBodyColor = 0xff9900;
             }
         });
 
