@@ -1,6 +1,9 @@
 name: sync files to pub branch
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
